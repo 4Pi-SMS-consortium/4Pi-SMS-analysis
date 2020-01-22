@@ -20,10 +20,13 @@ elseif numel(files)==0
 end
 
 
-[tmp totalframes]= dcimgmatlab(0, filename);
-% totalframes=20000;
-% ims=zeros(size(tmp,1),size(tmp,2),totalframes);
-ims=single(zeros(size(tmp,2),size(tmp,1),totalframes));
+%% XXX: previously, this made use of dcimgmatlab to read the image and
+%% would tranpose every plane.  If the transpose is still necessary
+%% with dcimgReaderMatlab, then use 'ims = permute(ims, [2 1 3])'
+reader = dcimgReaderMatlab(filename);
+ims = single(reader.getSpecificFrames(1:reader.metadata.num_frames));
+
+ims = permute(ims, [2 1 3])
 
 cutflag=0;
 cocropflag=0;
@@ -38,16 +41,7 @@ if nargin>2
     cocropflag=1;
 end
 
-if cutflag==0
-    for ii=1:1:totalframes
-        ims(:,:,ii)=single(dcimgmatlab(ii-1, filename))';
-    end
-else
-    for ii=1:1:totalframes
-        ims(:,:,ii)=single(dcimgmatlab(ii-1, filename))';
-%         ims(:,:,ii)=dcimgmatlab(ii-1, filename);
-    end
-    
+if cutflag~=0
     flipsigns=[0 0 1 1];
     [qds]=single(iPALMscmos_makeqds(ims,center,flipsigns));
     ims=[];
@@ -57,15 +51,9 @@ else
     %     qd4=ims(:,(center(4)-84):(center(4)+83),:);
     %     qd3=flipdim(qd3,2);
     %     qd4=flipdim(qd4,2);
-    
+
     if cocropflag==1
         [cocrops]=single(iPALMscmos_makeqds(co_cropims,center,flipsigns));
         %crop all attached images
     end
-    
 end
-
-clear mex
-
-
-
