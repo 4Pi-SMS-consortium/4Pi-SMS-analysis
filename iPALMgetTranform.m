@@ -9,7 +9,7 @@ center4 = str2num(get(handles.center4,'string'));
 centers = [center1 center2 center3 center4];
 
 c = posfile(end); %get last character of path to image file
-while c ~= '\' %get path only
+while c ~= '/' %get path only
     posfile(end) = []; %delete filename character
     if isempty(posfile) %break if no path present
         break;
@@ -27,19 +27,19 @@ if imageName ~= 0
         %         namestr= x{2};
         %         mkdir(resultpath);
         
-        resultpath = [pwd '\calibration_files\'];
+        resultpath = [pwd '/calibration_files/'];
         namestr = ['align' '_642_'];
         mkdir(resultpath);
         channel = '642';
         %         datestr(now,'mmddyyyy')
         
     elseif ~isempty(strfind(imageName,'_561_'))
-        resultpath = [pwd '\calibration_files\'];
+        resultpath = [pwd '/calibration_files/'];
         namestr = ['align' '_561_'];
         mkdir(resultpath);
         channel = '561';
     else
-        x = inputdlg({'Result Path','channel'},'File Directory',2,{[pwd '\calibration_files\'],''},options);
+        x = inputdlg({'Result Path','channel'},'File Directory',2,{[pwd '/calibration_files/'],''},options);
         resultpath = x{1};
         channel= x{2};
         namestr = ['align' '_' channel '_'];
@@ -109,7 +109,7 @@ para.file = [dataFolder imageName];
 para.offset = offset;
 datestring = datestr(now,'yyyymmdd');
 save([resultpath namestr 'FMTtransform_' datestring],'zm_all','trans_all','ang_all','R','invR','para');
-I=find(dataFolder=='\',2,'last');
+I=find(dataFolder=='/',2,'last');
 parentFolder = dataFolder(1:I);
 save([parentFolder namestr 'FMTtransform_' datestring],'zm_all','trans_all','ang_all','R','invR','para');
 set(handles.programStatus, 'String', {'Channel Alignment', ['Color Channel:' channel],['Input:' dataFolder imageName],['Output:' parentFolder namestr 'FMTtransform' datestring '.mat']}); %show progress

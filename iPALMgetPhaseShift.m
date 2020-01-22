@@ -9,7 +9,7 @@ centers = [center1 center2 center3 center4];
 
 posfile = get(handles.pathMainfolder, 'String');
 c = posfile(end); %get last character of path to image file
-while c ~= '\' %get path only
+while c ~= '/' %get path only
     posfile(end) = []; %delete filename character
     if isempty(posfile) %break if no path present
         break;
@@ -18,11 +18,11 @@ while c ~= '\' %get path only
 end
 
 [imageName,dataFolder] = uigetfile([posfile '*.dcimg'],'Open Calibration Images','MultiSelect','on');
-I=find(dataFolder=='\',2,'last');
+I=find(dataFolder=='/',2,'last');
 parentFolder = dataFolder(1:I);
 % clear; clc;close all
-% addpath '..\calibration_files\'
-% addpath '..\'
+% addpath '../calibration_files/'
+% addpath '../'
 % %% directory setup
 % datafolder=['G:\4PISCMOS\Mar23rd-2016\642\Cell03\'];
 % nameroot=['Cell03_642*.dcimg'];
@@ -52,7 +52,7 @@ if numel(tmpf)~=1
 else
     fmtname = [parentFolder tmpf.name];
 end
-resultpath = [pwd '\calibration_files\'];
+resultpath = [pwd '/calibration_files/'];
 namestr= ['bead_' channel];
 mkdir(resultpath);
 
