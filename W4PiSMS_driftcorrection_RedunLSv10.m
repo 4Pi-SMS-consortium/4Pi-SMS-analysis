@@ -56,18 +56,18 @@ else
     shifts=finaldrift;
     
     % second round of drift correction is optional
-    x=xout2;
-    y=yout2;
-    z=zout2;
-    p.zrange=[min(z) max(z)];
-    [drift,driftinfo,fieldc]=driftcorrection3D_so(x,y,z,frame,p);
-    shiftz=driftinfo.z.dz;
-    shiftz=diff(shiftz);
-    shiftx=driftinfo.xy.dx;
-    shifty=driftinfo.xy.dy;
-    shiftx=diff(shiftx);
-    shifty=diff(shifty);
-    [xout2]=shiftcoords_LS(xout,shiftx,tout,frmnum,reverseflag);
-    [yout2]=shiftcoords_LS(yout,shifty,tout,frmnum,reverseflag);  
-    [zout2]=shiftcoords_LS(zout,shiftz,tout,frmnum,reverseflag);     
+%     x=xout2;
+%     y=yout2;
+%     z=zout2;
+%     p.zrange=[min(z) max(z)];
+%     [drift,driftinfo,fieldc]=driftcorrection3D_so(x,y,z,frame,p);
+%     shiftz=driftinfo.z.dz;
+%     shiftz=diff(shiftz);
+%     shiftx=driftinfo.xy.dx;
+%     shifty=driftinfo.xy.dy;
+%     shiftx=diff(shiftx);
+%     shifty=diff(shifty);
+%     [xout2]=shiftcoords_LS(xout,shiftx,tout,frmnum,reverseflag);
+%     [yout2]=shiftcoords_LS(yout,shifty,tout,frmnum,reverseflag);  
+%     [zout2]=shiftcoords_LS(zout,shiftz,tout,frmnum,reverseflag);     
 end
