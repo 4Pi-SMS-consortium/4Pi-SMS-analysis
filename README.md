@@ -49,7 +49,7 @@ Additonal information of the dataset
     - On the GUI file display window, select "Cell04_642_tmpresult_datestring.mat", click "Reconstruction"
   - Step 3: visualization
     - A result file named "Cell04_642v20_60.mat" will be generated, which includes 3D positions of localized molecules and can be loaded in PYME for visualization
-    - A folder named "Cell04_ll" will be genreated with a file named "particles.csv", which can be loaded in Vutara SRX Software (Bruker) for 3D visualization and redering
+    - A folder named "Cell04_ll" will be genreated with a file named "particles.csv", which can be loaded in Vutara SRX Software (Bruker) for 3D visualization and rendering
 
 # Contact
 For any questions / comments about this software, please contact [Bewersdorf Lab](http://www.bewersdorflab.org/).
