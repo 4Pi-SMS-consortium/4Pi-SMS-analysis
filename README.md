@@ -23,15 +23,30 @@ An example dataset of immunolabeled microtubules of a COS-7 cell is provided.
 Download the dataset from: https://drive.google.com/open?id=1I3vBu9UyKaMJ6h1eGCE8DSasIcNGrG9X
 
 Additonal information of the dataset
-  - Raw images: 20 cycles included (3000 frames per cycle)
-  - Labeling: anti-a-tubulin primary antibody and CF660C conjugated secondary antibody
-  - Imaging conditions: 100 fps with a 642 nm laser at 7.5 kW/cm2 
+  - Cell images: 20 cycles included (3000 frames per cycle)
+    - Labeling: anti-a-tubulin primary antibody and CF660C conjugated secondary antibody
+    - Imaging conditions: 100 fps with a 642 nm laser at 7.5 kW/cm2 
+  - Images of fluorescence beads for channel alignment (10 franes)
+  - Images of fluorescence beads with 20 nm step sizes for phase shift estimation (61 steps)
 
 # How to run
-  1.
-  2.
-  3.
-
+  - Start Matlab program
+    - In Matlab, run "dipstart" to initialize DIPimage toolbox
+    - In Matlab, run "SMS-4Pi" to open the GUI interface 
+    - Click "Main Folder" and select the folder of the example dataset
+  - Generate calibration file 1
+    - On the GUI Menu, click "Channel Alignment" -> "Load", select the file in the folder "Beads_align"
+    - A calibration file named "align_642_FMTtransform_datestring.mat" will be generated
+  - Generate calibration file 2
+    - On the GUI Menu, click "Find Phaseshift" -> "Load", select all the file in the folder "Beads_stack"
+    - Two calibration files named "bead_642_Astfit_datestring.mat" and "bead_642_dphi_cali_datestring.mat" will be generated
+  - Step 1: get positions of the single molecules
+    - On the GUI file dispaly window, select the example dataset folder "\4Pi-SMS-Example-Dataset\Cell04", click "Get Positions"
+    - A result file named "Cell04_642_tmpresult_datestring.mat" will be genrated
+  - Step 2: phase unwrapping, drift correction and stitching
+    - Click radio button "Reconstrct" to switch the GUI display
+    - On the GUI file display window, select "Cell04_642_tmpresult_datestring.mat", click "Reconstruction"
+    - A result file named "Cell04_642v20_60.mat" will be generated
 
 # Contact
 For any questions / comments about this software, please contact [Bewersdorf Lab](http://www.bewersdorflab.org/).
@@ -40,4 +55,3 @@ For any questions / comments about this software, please contact [Bewersdorf Lab
 Copyright (c) 2020 Bewersdorf Lab, Yale Univeristy School of Medcine, USA.
 
 The package is licenced under the [GNU GPL](https://www.gnu.org/licenses/). 
-
