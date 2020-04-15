@@ -45,7 +45,7 @@ Additonal information of the dataset
     - On the GUI file dispaly window, select the example dataset folder "\4Pi-SMS-Example-Dataset\Cell04", click "Get Positions"
     - A result file named "Cell04_642_tmpresult_datestring.mat" will be genrated
   - Step 2: phase unwrapping, drift correction and stitching
-    - Click radio button "Reconstrct" to switch the GUI display
+    - Click radio button "Reconstruct" to switch the GUI display
     - On the GUI file display window, select "Cell04_642_tmpresult_datestring.mat", click "Reconstruction"
   - Step 3: visualization
     - A result file named "Cell04_642v20_60.mat" will be generated, which includes 3D positions of localized molecules and can be loaded in PYME for visualization
