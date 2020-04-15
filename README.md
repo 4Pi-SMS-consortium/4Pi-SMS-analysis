@@ -9,6 +9,7 @@ This package includes the Matlab code for analyzing the dataset recorded on the 
     - Curve Fitting Toolbox
     - Optimization Toolbox
   - DIPimage Toolbox (http://www.diplib.org/download)
+  - Some files from SMAP (https://github.com/jries/SMAP) 
     
 # Installation
   - Download and install Matlab of the right version 
