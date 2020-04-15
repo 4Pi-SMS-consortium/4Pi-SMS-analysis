@@ -48,6 +48,7 @@ Additonal information of the dataset
     - Click radio button "Reconstrct" to switch the GUI display
     - On the GUI file display window, select "Cell04_642_tmpresult_datestring.mat", click "Reconstruction"
     - A result file named "Cell04_642v20_60.mat" will be generated
+    - A folder named "Cell04_ll" will be genreated with a file named "particles.csv", which can be loaded in Vutara Software (Bruker) for 3D visualization and redering
 
 # Contact
 For any questions / comments about this software, please contact [Bewersdorf Lab](http://www.bewersdorflab.org/).
