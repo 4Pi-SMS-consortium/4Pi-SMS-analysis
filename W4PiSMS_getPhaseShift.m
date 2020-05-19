@@ -146,16 +146,16 @@ end
 
 %%
 figure
-[estx model]=fit_ast(zstep,sigmax);
+[estx,model]=fit_ast(zstep,sigmax);
 [~,fit_curve]=model(estx);
-plot(zstep,fit_curve,'b--','linewidth',4);
-hold on
 plot(zstep,sigmax,'bo');
+hold on
+plot(zstep,fit_curve,'b--','linewidth',4);
 
-[esty model]=fit_ast(zstep,sigmay);
+[esty,model]=fit_ast(zstep,sigmay);
 [~,fit_curve]=model(esty);
-plot(zstep,fit_curve,'r--','linewidth',4);
 plot(zstep,sigmay,'ro');
+plot(zstep,fit_curve,'r--','linewidth',4);
 
 xlabel('relative z (nm)');
 ylabel('sigma');
