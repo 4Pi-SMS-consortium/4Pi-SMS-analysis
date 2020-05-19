@@ -75,4 +75,6 @@ ang_contrast(id)=NaN;
 
 figure;
 scatter(rms(~id),rmp(~id),5,ang_contrast(~id));
+xlabel('rms');
+ylabel('rmp');
 pause(eps)

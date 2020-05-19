@@ -7,7 +7,7 @@ tagstruct.Photometric = Tiff.Photometric.MinIsBlack;
 tagstruct.BitsPerSample = 16;
 tagstruct.SampleFormat = Tiff.SampleFormat.UInt;
 tagstruct.PlanarConfiguration = Tiff.PlanarConfiguration.Chunky;
-h=waitbar(0,'Writting images,please wait...');
+h=waitbar(0,'Writting images, please wait...');
 for k = 1:n
     waitbar(k/n);
 	t.setTag(tagstruct)

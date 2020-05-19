@@ -61,6 +61,7 @@ addpath(path,'calibration_files\');
 addpath(path,'SMAP\');
 scmos_cali_file = 'sCMOS_calibration.mat';
 handles.scmos_cali_file = scmos_cali_file;
+handles.pixelsz = 128; % nm
 
 set(handles.center1,'string','235');
 set(handles.center2,'string','472');
@@ -130,7 +131,7 @@ if get(handles.selectGetpos,'value')==1
         % count how many folders to perform analysis im
         for ff=1:1:size(folders,2)
             files=dir([folders{ff},'\*.dcimg']);
-            if numel(files)<filenum_threshold;
+            if numel(files)<filenum_threshold
                 delin(kk)=ff;
                 kk=kk+1;
             end

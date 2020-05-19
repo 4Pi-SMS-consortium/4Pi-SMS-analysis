@@ -1,8 +1,8 @@
-function [rms rmp]=W4PiSMS_findmom_givenC(subims,xf,yf)
+function [rms,rmp]=W4PiSMS_findmom_givenC(subims,xf,yf)
 redmom=[];
 for ii=1:1:size(subims,4)
     sigma=1.1;
-    [x y]=meshgrid(0:size(subims,1)-1,0:size(subims,1)-1);
+    [x,y]=meshgrid(0:size(subims,1)-1,0:size(subims,1)-1);
     xxrep=repmat(x,[1 1 size(subims,3)]);
     yyrep=repmat(y,[1 1 size(subims,3)]);
     xfrep=repmat(reshape(xf,[1 1 size(subims,3)]),[size(subims,1) size(subims,2)]);

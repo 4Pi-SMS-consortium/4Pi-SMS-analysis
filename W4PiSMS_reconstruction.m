@@ -5,11 +5,11 @@ index_selected = get(handles.pathSubfolder,'value');
 filelist = get(handles.pathSubfolder,'string');
 file_selected = filelist(index_selected);
 
-photons=str2num(get(handles.photons,'string'));
-llrthresh=str2num(get(handles.llrthresh2,'string'));
-crlb_thresh = str2num(get(handles.crlb,'string'));
-angctr=[0.4 1.0];
+photons=str2double(get(handles.photons,'string'));
+llrthresh=str2double(get(handles.llrthresh2,'string'));
+crlb_thresh = str2double(get(handles.crlb,'string'));
 
+angctr=[0.4 1.2];
 st_frame=0;             %startframe
 frmthresh=3000*1000;    %stopframe
 stopval=str2double(get(handles.stopValue,'string'));     %stop value for Dmap
@@ -25,14 +25,14 @@ for ff=1:numel(file_selected)
     I=find(currentfile=='\',1,'last');
     currentfolder=currentfile(1:I);
     fileName=currentfile(I+1:end);
-    if ~isempty(strfind(fileName,'_642_'))
+    if contains(fileName,'_642_')
         channel = '642';
-        reverseflag=0; %642 ch does need to be reversed. from beginning to the end.
+        reverseflag=0; 
         freqstr='f_690';       
         eval(['freq=freqld.' freqstr ';']);
-    elseif ~isempty(strfind(fileName,'_561_'))
+    elseif contains(fileName,'_561_')
         channel = '561';
-        reverseflag=0; %561 ch does not need to be reversed. from beginning to the end.
+        reverseflag=0;
         freqstr='f_594';
          eval(['freq=freqld.' freqstr ';']);
     else
@@ -42,7 +42,9 @@ for ff=1:numel(file_selected)
     datestring = datestr(now,'yyyymmdd');
     set(handles.programStatus,'string',{'Current Analized File:',currentfile, ['Current Channel:' channel]})
     drawnow update
-    tmpld=load(file_selected{ff});   
+    tmpld=load(file_selected{ff});
+    imagesz=tmpld.para.imagesz;
+    pixelsz=tmpld.para.pixelsz;  
     num_images=tmpld.para.num_images;
     
     %% reject beads
@@ -50,7 +52,7 @@ for ff=1:numel(file_selected)
     Vin(:,1)=tmpld.xresult;
     Vin(:,2)=tmpld.yresult;
     Vin(:,3)=tmpld.tresult+1;
-    maskbead=reject_beads(single(Vin),num_images,tmpld.para.imagesz);
+    maskbead=reject_beads(single(Vin),tmpld.para.num_images,imagesz);
     
     %% rejection   
     mtc=(tmpld.sxtot.^3./tmpld.sytot-tmpld.sytot.^3./tmpld.sxtot)./40*2*pi;   
@@ -198,7 +200,7 @@ for ff=1:numel(file_selected)
         stopval1=stopval;
         [currzresult,z_err,mephimask]=Mephi_z_4PiSMS(currzang,currmtc,currt,num_images,1,stopval1,centermtc,freq);
 
-        maskzerr=z_err<60;        
+        maskzerr=z_err<100;        
         maskall=maskzerr&(mephimask>0)&abs(currzresult)<700;
         currzresult=currzresult(maskall>0);        
         currx=currx(maskall>0);
@@ -221,7 +223,8 @@ for ff=1:numel(file_selected)
         else
             interpflag=1;
         end
-        [xout{ss},yout{ss},zout{ss},shifts{ss}]=W4PiSMS_driftcorrection_RedunLSv10(currx.*128,curry.*128,currzresult,currt,num_images,reverseflag,interpflag,driftstr);
+        
+        [xout{ss},yout{ss},zout{ss},shifts{ss}]=W4PiSMS_driftcorrection_RedunLSv10(currx.*pixelsz,curry.*pixelsz,currzresult,currt,num_images,reverseflag,interpflag,driftstr);
         
         z_err_out{ss}=z_err;
         zf_out{ss}=currzfresult;
@@ -308,7 +311,7 @@ for ff=1:numel(file_selected)
     vutarazerr=cat(1,zerrf{:});
     vutarapr=cat(1,prf{:});
     
-    [flag]=W4PiSMS2vutarav2(currentfolder,[savename '_ll'],1,{vutarax},{vutaray},{vutaraz},{ceil(vutarat/100)},{vutaraI},{vutaracrlb},{vutarall},{vutarabg},{vutarazcon},{vutarazerr});
+    [flag]=W4PiSMS2vutarav2(currentfolder,[savename '_ll'],1,{vutarax},{vutaray},{vutaraz},{vutarat},{vutaraI},{vutaracrlb},{vutarall},{vutarabg},{vutarazcon},{vutarazerr});
     save([currentfolder savename '_' channel 'v20_60'],'vutarax','vutaray','vutaraz','vutarat','vutarall','vutaraI','vutarabg','vutarazcon','vutaracrlb','vutarazaster','vutarazerr','vutarapr');
     programStatus_string =[programStatus_string;['Save Vutarax File to:' currentfolder savename '_ll\' 'particles.csv']];
     set(handles.programStatus,'string',programStatus_string)
@@ -316,11 +319,10 @@ for ff=1:numel(file_selected)
     
     %% output image
     coords=[];
-    pixel=tmpld.para.pixel;
     pixel_SR=10;    
     coords(:,1)=vutarax/pixel_SR;
     coords(:,2)=vutaray/pixel_SR;
-    sz=tmpld.para.imagesz*pixel/pixel_SR;
+    sz=imagesz*pixelsz/pixel_SR;
     im=cHistRecon(sz,sz,single(coords(:,2)),single(coords(:,1)),0);
     gaussim=gaussf(im,[1 1]);
     str2=([currentfolder savename '_gauss_1.tif']);

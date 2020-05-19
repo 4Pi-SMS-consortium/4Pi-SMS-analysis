@@ -17,7 +17,7 @@ if nargin==1
 if isequal([filename,pathname],[0,0])
     return
 else
-    if isempty(strfind(filename,'.tif'))
+    if ~contains(filename,'.tif')
         filename=strcat(filename,'.tif');
     end
     FileStr = fullfile(pathname,filename);

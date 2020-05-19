@@ -76,7 +76,7 @@ end
 
 %% rotate and align
 [q1 q2 q3 q4]=W4PiSMS_RotAlign_FMT(aveqd1,aveqd2,aveqd3,aveqd4,fmtname);
-colorim=joinchannels('RGB',q3,q1);
+colorim1=joinchannels('RGB',q3,q1);
 colorim2=joinchannels('RGB',q4,q2);
 
 %% find local centers
@@ -163,10 +163,9 @@ legend('Obs. \sigma_x','Fit. \sigma_x','Obs. \sigma_x','Fit. \sigma_y','Location
 xlim([0 1200]);
 
 %% save
-dat = now;
 datestring=datestr(now,'yyyymmdd');
-save([resultpath namestr '_Astfit_' datestring],'model','estx','zstep','esty','sigmax','sigmay','dat');
-save([parentFolder namestr '_Astfit_' datestring],'model','estx','zstep','esty','sigmax','sigmay','dat');
+save([resultpath namestr '_Astfit_' datestring],'model','estx','zstep','esty','sigmax','sigmay');
+save([parentFolder namestr '_Astfit_' datestring],'model','estx','zstep','esty','sigmax','sigmay');
 set(handles.programStatus,'string','Find phase shift')
 drawnow update
 

@@ -4,7 +4,7 @@ zm=tmp.zm_all;
 trans=tmp.trans_all;
 ang=tmp.ang_all;
 
-q1=qd1;
+q1=single(qd1);
 q2=single(zeros(size(qd2)));
 q3=single(zeros(size(qd3)));
 q4=single(zeros(size(qd4)));

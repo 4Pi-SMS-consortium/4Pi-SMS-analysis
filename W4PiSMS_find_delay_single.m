@@ -1,4 +1,4 @@
-function [est model]=W4PiSMS_find_delay_single(x,rm,start_point)
+function [est,model]=W4PiSMS_find_delay_single(x,rm,start_point)
 
 model = @phifun;
 est = fminsearch(model, start_point);

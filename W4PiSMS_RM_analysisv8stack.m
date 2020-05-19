@@ -1,4 +1,4 @@
-function [xresult yresult tresult zfresult zangresult llresult CRLBresult Iresult zast_err_result stacktot num_images zangctrresult bgresult subimstot sxtot sytot]=W4PiSMS_RM_analysisv8stack(foldername,nameroot,fmfile,astfile,anglefile,llrthresh,scmos_cali_file,det_thresh,CRLB_thresh,sigma_thresh,centers,handles)
+function [xresult yresult tresult zfresult zangresult llresult CRLBresult Iresult zast_err_result stacktot num_images imagesz zangctrresult bgresult subimstot sxtot sytot]=W4PiSMS_RM_analysisv8stack(foldername,nameroot,fmfile,astfile,anglefile,llrthresh,scmos_cali_file,det_thresh,CRLB_thresh,sigma_thresh,centers,handles)
 %% parameters
 fit_flag=str2double(get(handles.fit_flag,'string')); % 1: 4Pi, 2: 2D, 3: 3D
 if fit_flag==2
@@ -49,6 +49,7 @@ for ff=1:1:numel(files)
     qd3=(qds(:,:,:,3)-repmat(offsetim(:,:,3),[1 1 size(qds,3) 1]))./repmat(gainim(:,:,3),[1 1 size(qds,3) 1]);
     qd4=(qds(:,:,:,4)-repmat(offsetim(:,:,4),[1 1 size(qds,3) 1]))./repmat(gainim(:,:,4),[1 1 size(qds,3) 1]);
     num_images=size(qds,3);
+    imagesz=size(qds,1);
     qds=[];
         
     %% rotate and align 
@@ -218,8 +219,7 @@ for ff=1:1:numel(files)
     end
     disp('Z_ast fitting finished...Start phase estimation');
     
-    %% determine the phase
-    
+    %% determine the phase    
     if isempty(locmaxc_f)
         continue
     end
@@ -234,7 +234,7 @@ for ff=1:1:numel(files)
     end
 
     qd1=[];qd2=[];qd3=[];qd4=[];
-    disp('Phase estimation finished...Start the next file...');
+    disp('Phase estimation finished...Start next file...');
     
     %% collect data
     xest=xf+tlz_f(:,2);
@@ -263,12 +263,12 @@ sytot=sytot(mask);
 xresult=xresult(mask);
 yresult=yresult(mask);
 bgresult=bgresult(mask);
-zfresult=zfresult(mask);
-zangresult=zangresult(mask);
-zangctrresult=zangctrresult(mask);
-tresult=tresult(mask);
-zast_err_result=zast_err_result(mask);
 llresult=llresult(mask);
 CRLBresult=CRLBresult(mask,:);
 Iresult=Iresult(mask);
-stacktot=stacktot(mask);
+tresult=tresult(mask);
+zfresult=single(zfresult(mask));
+zangresult=single(zangresult(mask));
+zangctrresult=single(zangctrresult(mask));
+zast_err_result=single(zast_err_result(mask));
+stacktot=single(stacktot(mask));
