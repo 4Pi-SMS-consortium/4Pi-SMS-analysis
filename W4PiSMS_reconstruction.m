@@ -249,13 +249,13 @@ for ff=1:numel(file_selected)
         shifty_st=0;
         shiftz_st=0;
     else
-        pixelsz=25;
+        pixelsz2=25;
         errorthresh=15;
         cutmeth='nocut';
         iniguess=[0 0 500];
         maskflag=0;
         stksort=[];
-        [shiftx_st,shifty_st,shiftz_st,rankf]=W4PiSMS_stack_RedunLSv9z(stksort,xout,yout,zout,pixelsz,errorthresh,cutmeth,iniguess,maskflag,[]);
+        [shiftx_st,shifty_st,shiftz_st,rankf]=W4PiSMS_stack_RedunLSv9z(stksort,xout,yout,zout,pixelsz2,errorthresh,cutmeth,iniguess,maskflag,[]);
     end
     [xcof]=shiftcoords_stack(xout,shiftx_st);
     [ycof]=shiftcoords_stack(yout,shifty_st);
