@@ -1,10 +1,10 @@
 function W4PiSMS_getPhaseShift(handles)
 
 close all
-center1 = str2num(get(handles.center1,'string'));
-center2 = str2num(get(handles.center2,'string'));
-center3 = str2num(get(handles.center3,'string'));
-center4 = str2num(get(handles.center4,'string'));
+center1 = str2double(get(handles.center1,'string'));
+center2 = str2double(get(handles.center2,'string'));
+center3 = str2double(get(handles.center3,'string'));
+center4 = str2double(get(handles.center4,'string'));
 centers = [center1 center2 center3 center4];
 
 posfile = get(handles.pathMainfolder, 'String');
@@ -75,7 +75,7 @@ for ii=1:1:numel(imageName)
 end
 
 %% rotate and align
-[q1 q2 q3 q4]=W4PiSMS_RotAlign_FMT(aveqd1,aveqd2,aveqd3,aveqd4,fmtname);
+[q1,q2,q3,q4]=W4PiSMS_RotAlign_FMT(aveqd1,aveqd2,aveqd3,aveqd4,fmtname);
 colorim1=joinchannels('RGB',q3,q1);
 colorim2=joinchannels('RGB',q4,q2);
 
@@ -157,8 +157,8 @@ plot(zstep,fit_curve,'b--','linewidth',4);
 plot(zstep,sigmay,'ro');
 plot(zstep,fit_curve,'r--','linewidth',4);
 
-xlabel('relative z (nm)');
-ylabel('sigma');
+xlabel('Z position (nm)');
+ylabel('Sigma');
 legend('Obs. \sigma_x','Fit. \sigma_x','Obs. \sigma_x','Fit. \sigma_y','Location','North');
 xlim([0 1200]);
 
@@ -180,12 +180,16 @@ rm1=rms./moment_normalization(rms);
 rm2=rmp./moment_normalization(rmp);
 
 figure;
-plot(rm1,'r');
+plot(zstep,rm1,'r');
 hold on;
-plot(rm2,'b');
-plot(-rm1,'--r');
-plot(-rm2,'--b');
-legend('rm1','rm2','inv_rm1','inv_rm2');
+plot(zstep,rm2,'b');
+plot(zstep,-rm1,'--r');
+plot(zstep,-rm2,'--b');
+legend('P1','S1','P2','S2');
+xlim([0 1200]);
+ylim([-1 1]);
+xlabel('Z position (nm)');
+ylabel('Reduced moment (A.U.)');
 
 %% estimate the phase delay
 A1=0.9;
@@ -201,21 +205,25 @@ rmpin=rm2(id-20:id+20);
 x=1:1:numel(rmsin);
 
 % fit indivual curve first
-[est1 mode1l]=W4PiSMS_find_delay_single(x,rmsin,[A1 w phi1 b1]);
-[est2 model2]=W4PiSMS_find_delay_single(x,rmpin,[A2 w phi2 b2]);
+[est1,mode1l]=W4PiSMS_find_delay_single(x,rmsin,[A1 w phi1 b1]);
+[est2,model2]=W4PiSMS_find_delay_single(x,rmpin,[A2 w phi2 b2]);
 
 figure
 plot(x,rmsin,'r');
 hold on
 plot(x,rmpin,'b');
 start_point=[est1(1,1) est1(1,2) est1(1,3) est1(1,4) est2(1,1) est2(1,3) est2(1,4)];
-[est model]=W4PiSMS_find_delay(x,rmsin,rmpin,start_point);
+[est,model]=W4PiSMS_find_delay(x,rmsin,rmpin,start_point);
 
 [~,fitrms,fitrmp]=feval(model,est);
 
-plot(x,fitrms,'--r');
+plot(x,fitrms,'r--');
 hold on
-plot(x,fitrmp,'--b');
+plot(x,fitrmp,'b--');
+legend('P','S','P\_fit','S\_fit');
+ylim([-1 1]);
+xlabel('Z step');
+ylabel('Reduced moment (A.U.)');
 
 phi_s=est(3);
 phi_p=est(6);
@@ -223,26 +231,25 @@ dphi=phi_s-phi_p;
 disp(['Phase shift (rad): ',num2str(dphi)]);
 
 %% get angle from rms and rmp
-c=rm1+1i*rm2;
-ang=angle(c);   % change to MLE
-ang2=[];
-for ii=1:1:numel(rms)
-    [ang2(ii,:)]=W4PiSMS_est_angle(rms(ii),rmp(ii),phi_s,phi_p,ang(ii)-phi_s);
-end
-
-figure
-plot(ang2(:,2))
-hold on
-plot(ang-phi_s,'r');
+ang2=MyCalPahse_new(rm1,rm2,phi_s,phi_p);
+figure;plot(zstep,ang2(:,2),'b');
+xlim([0 1200]);
+ylim([-pi pi])
+xlabel('Z position (nm)');
+ylabel('Phase (rad)');
 
 %%
 [ang_coeff,angp]=polyfit(zstep(1:N),unwrap(ang2(1:N,2)),1);
 
 figure
-plot(zstep(1:N),unwrap(ang2(1:N,2)),'b');
+plot(zstep(1:N),unwrap(ang2(1:N,2)),'b--');
 hold on
-plot(zstep(1:N),unwrap(ang(1:N)-phi_s),'r');
-plot(zstep(1:N),zstep(1:N)*ang_coeff(1)+ang_coeff(2),'--r');
+plot(zstep(1:N),zstep(1:N)*ang_coeff(1)+ang_coeff(2),'r');
+legend('Phase value','Linear fit','Location','northwest');
+xlim([0 1200]);
+ylim([0 30]);
+xlabel('Z position (nm)');
+ylabel('Unwrapped phase (rad)');
 
 para.centers = centers;
 para.file = [dataFolder imageName];
