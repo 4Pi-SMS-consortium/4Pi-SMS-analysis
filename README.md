@@ -27,7 +27,7 @@ Additonal information of the dataset
   - Cell images: 20 cycles included (3000 frames per cycle)
     - Labeling: anti-a-tubulin primary antibody and CF660C conjugated secondary antibody
     - Imaging conditions: 100 fps with a 642 nm laser at 7.5 kW/cm2 
-  - Images of fluorescence beads for channel alignment (10 franes)
+  - Images of fluorescence beads for channel alignment (10 frames)
   - Images of fluorescence beads with 20 nm step sizes for phase shift estimation (61 steps)
 
 # How to run
